@@ -7,7 +7,7 @@ var RedditComment = function (userContent, user, thread, url, upVotes) {
     this.user = user;
     this.thread = thread;
     this.url = url;
-    this.upVotes = upVotes;
+    this.score = score;
     this.children = [];
 };
 
@@ -27,8 +27,8 @@ RedditComment.prototype.getThread = function() {
 };
 
 // Getter for content
-RedditComment.prototype.getUpVotes = function() {
-    return this.upVotes;
+RedditComment.prototype.getScore = function() {
+    return this.score;
 };
 
 // Getter for children
