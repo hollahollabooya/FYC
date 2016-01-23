@@ -9,8 +9,17 @@
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
+
+
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["jquery-2.2.0.min.js", "reddit_query.js"]
+    }
+  ],
+
   "permissions": [
-    "activeTab",
+    "tabs",
     "https://ajax.googleapis.com/"
   ]
 }
