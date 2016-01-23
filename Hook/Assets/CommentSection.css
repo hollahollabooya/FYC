@@ -1,0 +1,19 @@
+#comments-selector {
+  padding: 0; }
+  #comments-selector div {
+    display: inline-block;
+    height: 60px;
+    width: 50%;
+    line-height: 60px;
+    text-align: center;
+    border: 1px solid #c6c6c6;
+    box-sizing: border-box;
+    cursor: pointer; }
+    #comments-selector div:hover {
+      background-color: #D6DBDE; }
+  #comments-selector #youtube-select {
+    border-left: none; }
+  #comments-selector .selected {
+    background-color: #daefff; }
+
+/*# sourceMappingURL=CommentSection.css.map */
