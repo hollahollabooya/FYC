@@ -1,0 +1,26 @@
+#comments-selector {
+  padding: 0;
+
+  div {
+    display: inline-block;
+    height: 60px;
+    width: 50%;
+    line-height: 60px;
+    text-align: center;
+    border: 1px solid #c6c6c6;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #D6DBDE;
+    }
+  }
+
+  #youtube-select {
+    border-left: none;
+  }
+
+  .selected {
+    background-color: #daefff;
+  }
+}

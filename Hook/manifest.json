@@ -14,7 +14,8 @@
   "content_scripts": [
     {
       "matches": ["*://www.youtube.com/*"],
-      "js": ["jquery-2.2.0.min.js", "reddit_query.js"]
+      "js": ["jquery-2.2.0.min.js", "reddit_query.js", "./Assets/CommentSection.js"],
+      "css": ["./Assets/CommentSection.css"]
     }
   ],
 
