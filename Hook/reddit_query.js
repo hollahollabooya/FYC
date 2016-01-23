@@ -1,6 +1,7 @@
 function afterNavigate() {
     if ('/watch' === location.pathname) {
-        alert('Watch page!');
+        var url = window.location.href;
+        alert(url);
     }
 }
 (document.body || document.documentElement).addEventListener('transitionend',
