@@ -2,7 +2,7 @@
 (function() {
 
   window.mainScript = function() {
-    var decodeHTML, drawToScreen, pageSetup, populateComments, reddit, selectorSetup, suggestPost;
+    var decodeHTML, drawToScreen, pageSetup, populateComments, reddit, selectorSetup, setupUpdoots, suggestPost;
     pageSetup = function() {
       $('<div class="branded-page-box yt-card" id="comments-selector"><div id="reddit-select" class="selected">Reddit</div><div id="youtube-select">Youtube</div></div>').insertBefore('#watch-discussion');
       $('#watch-discussion').hide();
@@ -64,6 +64,16 @@
     suggestPost = function() {
       return $('#reddit-comments-card').append("<div class=\"empty-message\">We couldn\'t find anything! Maybe you should <a href=\"https://www.reddit.com/r/videos/submit?url=" + (encodeURI(window.location.href)) + "\">submit to r/videos</a></div>");
     };
+    setupUpdoots = function() {
+      $('.reddit-comment-updoot .up').on("click", function() {
+        $(this).toggleClass('active');
+        return $(this).parent().find('.down').removeClass('active');
+      });
+      return $('.reddit-comment-updoot .down').on("click", function() {
+        $(this).toggleClass('active');
+        return $(this).parent().find('.up').removeClass('active');
+      });
+    };
     drawToScreen = function(comments) {
       pageSetup();
       selectorSetup();
@@ -71,25 +81,12 @@
         populateComments(comments, 0);
       }
       if (comments.length === 0) {
-        return suggestPost();
+        suggestPost();
       }
+      return setupUpdoots();
     };
     reddit = new RedditSearch(drawToScreen);
     return reddit.queryReddit(window.location.href);
   };
-
-  /* testComment = new RedditComment(
-     '&lt;div class="md"&gt;&lt;p&gt;Dunkey&amp;#39;s been hitting a Reddit gold mine lately.&lt;/p&gt;↵&lt;/div&gt;',
-     "TestUser",
-     "http://www.reddit.com/",
-     "http://www.reddit.com/",
-     666,
-     []
-   )
-  
-   testComments = [testComment, testComment, testComment, testComment, testComment]
-   drawToScreen(testComments)
-  */
-
 
 }).call(this);
