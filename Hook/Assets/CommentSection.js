@@ -32,6 +32,12 @@
       _results = [];
       for (_i = 0, _len = comments.length; _i < _len; _i++) {
         comment = comments[_i];
+        if (!(comment.user != null)) {
+          continue;
+        }
+        if (comment.user === '[deleted]') {
+          continue;
+        }
         commentHTML = $("<div class=\"reddit-comment " + (index > 0 ? 'lesser' : void 0) + "\"></div>");
         $('#reddit-comments-card').append(commentHTML);
         commentHTML.append('<div class="reddit-comment-updoot"></div>');

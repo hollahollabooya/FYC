@@ -24,6 +24,8 @@ window.mainScript = ->
 
   populateComments = (comments, index) ->
     for comment in comments
+      continue if not comment.user?
+      continue if comment.user == '[deleted]'
       commentHTML = $("<div class=\"reddit-comment #{ 'lesser' if index > 0 }\"></div>")
       $('#reddit-comments-card').append(commentHTML)
       commentHTML.append('<div class="reddit-comment-updoot"></div>')
