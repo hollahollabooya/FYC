@@ -24,3 +24,48 @@
     background-color: #daefff;
   }
 }
+
+#reddit-comments-card {
+  overflow: auto;
+
+  .reddit-comment {
+    margin-top: 20px;
+    overflow: auto;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .reddit-comment-updoot {
+      float: left;
+      text-align: center;
+      margin-right: 5px;
+
+      div {
+        margin: 0 auto;
+        height: 14px;
+        width: 15px;
+      }
+      .up {
+        background-position: 0 -24px;
+      }
+      .down {
+        background-position: -30px -24px;
+      }
+    }
+
+    .comment-wrapper {
+      float: left;
+      width: 95%;
+
+      .reddit-comment-source {
+        display: inline-block;
+      }
+
+      .reddit-comment-more {
+        display: inline-block;
+        margin-left: 15px;
+      }
+    }
+  }
+}

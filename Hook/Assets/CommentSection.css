@@ -16,4 +16,32 @@
   #comments-selector .selected {
     background-color: #daefff; }
 
+#reddit-comments-card {
+  overflow: auto; }
+  #reddit-comments-card .reddit-comment {
+    margin-top: 20px;
+    overflow: auto; }
+    #reddit-comments-card .reddit-comment:first-child {
+      margin-top: 0; }
+    #reddit-comments-card .reddit-comment .reddit-comment-updoot {
+      float: left;
+      text-align: center;
+      margin-right: 5px; }
+      #reddit-comments-card .reddit-comment .reddit-comment-updoot div {
+        margin: 0 auto;
+        height: 14px;
+        width: 15px; }
+      #reddit-comments-card .reddit-comment .reddit-comment-updoot .up {
+        background-position: 0 -24px; }
+      #reddit-comments-card .reddit-comment .reddit-comment-updoot .down {
+        background-position: -30px -24px; }
+    #reddit-comments-card .reddit-comment .comment-wrapper {
+      float: left;
+      width: 95%; }
+      #reddit-comments-card .reddit-comment .comment-wrapper .reddit-comment-source {
+        display: inline-block; }
+      #reddit-comments-card .reddit-comment .comment-wrapper .reddit-comment-more {
+        display: inline-block;
+        margin-left: 15px; }
+
 /*# sourceMappingURL=CommentSection.css.map */

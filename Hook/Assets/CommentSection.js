@@ -2,11 +2,13 @@
 (function() {
 
   $(document).ready(function() {
-    var pageSetup, selectorSetup;
+    var pageSetup, populateComments, selectorSetup, testComment, testComments;
+    testComment = new RedditComment('YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!! WATSUUUUUUUUUUUUUUUUUUUUUUUUUUUP FUCKING FILLER BITCH!!! WOOOOOO!!! But seriously I need a lot of text here to accureately test the overflow of my css classes so hopefully this will do it you fucks!', "JSHater", "https://www.reddit.com/r/videos/comments/42b5vv/robot_solves_rubiks_cube_in_11_seconds/", "https://www.reddit.com/r/videos/comments/42b5vv/robot_solves_rubiks_cube_in_11_seconds/cz8zqm7", 474);
+    testComments = [testComment, testComment, testComment, testComment, testComment];
     pageSetup = function() {
       $('<div class="branded-page-box yt-card" id="comments-selector"><div id="reddit-select" class="selected">Reddit</div><div id="youtube-select">Youtube</div></div>').insertBefore('#watch-discussion');
       $('#watch-discussion').hide();
-      return $('<div class="branded-page-box yt-card" id="reddit-comments-card">CONTENT</div>').insertAfter('#watch-discussion');
+      return $('<div class="branded-page-box yt-card" id="reddit-comments-card"></div>').insertAfter('#watch-discussion');
     };
     selectorSetup = function() {
       $('#reddit-select').on("click", function() {
@@ -22,8 +24,31 @@
         return $('#youtube-select').addClass('selected');
       });
     };
+    populateComments = function() {
+      var comment, commentHTML, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = testComments.length; _i < _len; _i++) {
+        comment = testComments[_i];
+        commentHTML = $('<div class="reddit-comment"></div>');
+        $('#reddit-comments-card').append(commentHTML);
+        commentHTML.append('<div class="reddit-comment-updoot"></div>');
+        commentHTML.find('.reddit-comment-updoot').append("<div class=\"up\" style=\"background-image: url(" + (chrome.extension.getURL('/Assets/Images/reddit_icons.png')) + ");\"></div>");
+        commentHTML.find('.reddit-comment-updoot').append("<span>" + comment.upVotes + "</span>");
+        commentHTML.find('.reddit-comment-updoot').append("<div class=\"down\" style=\"background-image: url(" + (chrome.extension.getURL('/Assets/Images/reddit_icons.png')) + ");\"></div>");
+        commentHTML.append('<div class="comment-wrapper"></div>');
+        commentHTML.find('.comment-wrapper').append('<div class="reddit-comment-user"></div>');
+        commentHTML.find('.reddit-comment-user').append("<a href=\"http://www.reddit.com/u/" + comment.user + "\">" + comment.user + "</a>");
+        commentHTML.find('.comment-wrapper').append("<div class=\"reddit-comment-content\">" + comment.userContent + "</div>");
+        commentHTML.find('.comment-wrapper').append('<div class="reddit-comment-source"></div>');
+        commentHTML.find('.reddit-comment-source').append("<a href=\"" + comment.url + "\">See Original</a>");
+        commentHTML.find('.comment-wrapper').append('<div class="reddit-comment-more"></div>');
+        _results.push(commentHTML.find('.reddit-comment-more').append("<a href=\"" + comment.thread + "\">More From This Thread</a>"));
+      }
+      return _results;
+    };
     pageSetup();
-    return selectorSetup();
+    selectorSetup();
+    return populateComments();
   });
 
 }).call(this);
