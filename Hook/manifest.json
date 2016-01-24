@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Total Yolo Comments",
+  "description": "This extension embeds Reddit comments into where Youtube comments would be.",
   "version": "1.0",
 
   "browser_action": {
