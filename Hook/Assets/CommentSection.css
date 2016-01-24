@@ -18,6 +18,9 @@
 
 #reddit-comments-card {
   overflow: auto; }
+  #reddit-comments-card .empty-message {
+    text-align: center;
+    font-size: 24px; }
   #reddit-comments-card .reddit-comment {
     margin-top: 20px;
     overflow: auto; }

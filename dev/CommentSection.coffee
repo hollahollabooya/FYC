@@ -44,11 +44,15 @@ window.mainScript = ->
       if index == 0
         populateComments(comment.children, 1)
 
+  suggestPost = ->
+    $('#reddit-comments-card').append("<div class=\"empty-message\">We couldn\'t find anything! Maybe you should <a href=\"https://www.reddit.com/r/videos/submit?url=#{ encodeURI(window.location.href) }\">submit to r/videos</a></div>")
+
   #Main Function
   drawToScreen = (comments) ->
     pageSetup()
     selectorSetup()
-    populateComments(comments, 0)
+    populateComments(comments, 0) if comments.length > 0
+    suggestPost() if comments.length == 0
 
   reddit = new RedditSearch(drawToScreen)
   reddit.queryReddit(window.location.href)

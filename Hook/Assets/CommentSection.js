@@ -2,7 +2,7 @@
 (function() {
 
   window.mainScript = function() {
-    var decodeHTML, drawToScreen, pageSetup, populateComments, reddit, selectorSetup;
+    var decodeHTML, drawToScreen, pageSetup, populateComments, reddit, selectorSetup, suggestPost;
     pageSetup = function() {
       $('<div class="branded-page-box yt-card" id="comments-selector"><div id="reddit-select" class="selected">Reddit</div><div id="youtube-select">Youtube</div></div>').insertBefore('#watch-discussion');
       $('#watch-discussion').hide();
@@ -61,10 +61,18 @@
       }
       return _results;
     };
+    suggestPost = function() {
+      return $('#reddit-comments-card').append("<div class=\"empty-message\">We couldn\'t find anything! Maybe you should <a href=\"https://www.reddit.com/r/videos/submit?url=" + (encodeURI(window.location.href)) + "\">submit to r/videos</a></div>");
+    };
     drawToScreen = function(comments) {
       pageSetup();
       selectorSetup();
-      return populateComments(comments, 0);
+      if (comments.length > 0) {
+        populateComments(comments, 0);
+      }
+      if (comments.length === 0) {
+        return suggestPost();
+      }
     };
     reddit = new RedditSearch(drawToScreen);
     return reddit.queryReddit(window.location.href);

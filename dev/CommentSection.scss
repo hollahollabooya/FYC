@@ -28,6 +28,11 @@
 #reddit-comments-card {
   overflow: auto;
 
+  .empty-message {
+    text-align: center;
+    font-size: 24px;
+  }
+
   .reddit-comment {
     margin-top: 20px;
     overflow: auto;
