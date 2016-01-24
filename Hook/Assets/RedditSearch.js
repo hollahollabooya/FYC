@@ -1,9 +1,10 @@
 /*
 Defines the RedditComment Object
 */
-var RedditComment = function(userContent, user, threadUrl, url, score, depth) {
+var RedditComment = function(userContent, user, subreddit, threadUrl, url, score, depth) {
     this.userContent = userContent;
     this.user = user;
+    this.subreddit = subreddit;
     this.threadUrl = threadUrl;
     this.url = url;
     this.score = score;
@@ -27,7 +28,7 @@ var RedditSearch = function(callback){
 
 RedditSearch.prototype.queryReddit = function(url) {
     $.ajax({
-        url:"https://www.reddit.com/search.json",
+        url:"http://www.reddit.com/search.json",
         data: {limit: this.MAX_THREADS, q:("url:" + url), sort: "top"},
         success: this.getCommentTrees.bind(this)
     });
@@ -35,7 +36,7 @@ RedditSearch.prototype.queryReddit = function(url) {
 
 RedditSearch.prototype.queryCommentTree = function(subreddit, id) {
     return $.ajax({
-        url:"https://www.reddit.com/r/" + subreddit + "/" + id + ".json",
+        url:"http://www.reddit.com/r/" + subreddit + "/" + id + ".json",
         data: {depth: this.MAX_COMMENT_DEPTH, sort: "top"}
     });
 };
@@ -67,7 +68,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
     var permalinks = [];
 
     // declare variables for constructing comment
-    var userContent, user, threadUrl, url, children, score, depth;
+    var userContent, user, subreddit, threadUrl, url, children, score, depth;
     var com, comment, replies, reply;
     var numReplies = 0;
 
@@ -90,6 +91,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
                 trees[0][1].data.children[current[0]].data;
             userContent = com.body;
             user = com.author;
+            subreddit = com.subreddit;
             threadUrl = permalinks[0];
             url = permalinks[0].concat(com.id);
             score = com.score;
@@ -97,8 +99,8 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             children = []; // children are empty for now
 
             // add comment to list
-            comment = new RedditComment(userContent, user, threadUrl,
-                url, score, depth)
+            comment = new RedditComment(userContent, user, subreddit,
+                threadUrl, url, score, depth)
             bestComments.push(comment);
 
             // Select replies if any
@@ -112,13 +114,14 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
                     }
                     userContent = replies[i].data.body;
                     user = replies[i].data.author;
+                    subreddit = replies[i].data.subreddit;
                     url = permalinks[bestSoFar].concat(replies[i].data.id);
                     score = replies[i].data.score;
                     depth = 1;
                     children = [];
 
-                    reply = new RedditComment(userContent, user, threadUrl,
-                        url, score, depth);
+                    reply = new RedditComment(userContent, user, subreddit,
+                        threadUrl, url, score, depth);
                     comment.addChild(reply);
                     numComments++;
                 }
@@ -161,6 +164,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
                 trees[bestSoFar][0][1].data.children[current[bestSoFar]].data;
             userContent = com.body;
             user = com.author;
+            subreddit = com.subreddit;
             threadUrl = permalinks[bestSoFar];
             url = permalinks[bestSoFar].concat(com.id);
             score = MAX;
@@ -168,8 +172,8 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             children = []; // children are empty for now
 
             // add com to list
-            comment = new RedditComment(userContent, user, threadUrl, url,
-                score, depth);
+            comment = new RedditComment(userContent, user, threadUrl,
+                subreddit, url, score, depth);
             bestComments.push(comment);
 
             // Select replies if any
@@ -183,13 +187,14 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
                     }
                     userContent = replies[i].data.body;
                     user = replies[i].data.author;
+                    subreddit = replies[i].data.subreddit;
                     url = permalinks[bestSoFar].concat(replies[i].data.id);
                     score = replies[i].data.score;
                     depth = 1;
                     children = [];
 
-                    reply = new RedditComment(userContent, user, threadUrl,
-                        url, score, depth);
+                    reply = new RedditComment(userContent, user, subreddit,
+                        threadUrl, url, score, depth);
                     comment.addChild(reply);
                     numComments++;
                 }
@@ -202,10 +207,18 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             bestSoFar = 0;
             update = false;
         }
-        this.callback(bestComments);
+        console.log(bestComments);
+        // return bestComments;
     }
+};
+
+RedditSearch.prototype.postVote = function() {
+
 };
 
 RedditSearch.prototype.replyDistribution = function (numComments) {
     return Math.round(-0.1 * numComments + 5);
 }
+
+var reddit = new RedditSearch();
+var test = reddit.queryReddit("https://www.youtube.com/watch?v=tgIgsw8WsYY");
