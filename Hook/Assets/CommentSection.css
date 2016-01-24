@@ -26,7 +26,7 @@
     #reddit-comments-card .reddit-comment .reddit-comment-updoot {
       float: left;
       text-align: center;
-      margin-right: 5px; }
+      width: 5%; }
       #reddit-comments-card .reddit-comment .reddit-comment-updoot div {
         margin: 0 auto;
         height: 14px;
