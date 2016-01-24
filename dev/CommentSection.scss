@@ -32,6 +32,12 @@
     margin-top: 20px;
     overflow: auto;
 
+    a {
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
     &.lesser {
       padding-left: 20px;
       margin-left: 19px;
@@ -66,6 +72,14 @@
 
       .reddit-comment-user {
         margin-bottom: 5px;
+        display: inline-block;
+        margin-right: 15px;
+      }
+
+      .reddit-comment-sub {
+        display: inline-block;
+        margin-bottom: 5px;
+        color: rgb(210, 210, 0);
       }
 
       .reddit-comment-source {
