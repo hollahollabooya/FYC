@@ -2,7 +2,7 @@
 (function() {
 
   window.mainScript = function() {
-    var drawToScreen, pageSetup, populateComments, reddit, selectorSetup;
+    var decodeHTML, drawToScreen, pageSetup, populateComments, reddit, selectorSetup;
     pageSetup = function() {
       $('<div class="branded-page-box yt-card" id="comments-selector"><div id="reddit-select" class="selected">Reddit</div><div id="youtube-select">Youtube</div></div>').insertBefore('#watch-discussion');
       $('#watch-discussion').hide();
@@ -22,12 +22,17 @@
         return $('#youtube-select').addClass('selected');
       });
     };
-    populateComments = function(comments) {
+    decodeHTML = function(encodedString) {
+      var decoded;
+      decoded = $('<div/>').html(encodedString).text();
+      return SnuOwnd.getParser().render(decoded);
+    };
+    populateComments = function(comments, index) {
       var comment, commentHTML, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = comments.length; _i < _len; _i++) {
         comment = comments[_i];
-        commentHTML = $('<div class="reddit-comment"></div>');
+        commentHTML = $("<div class=\"reddit-comment " + (index > 0 ? 'lesser' : void 0) + "\"></div>");
         $('#reddit-comments-card').append(commentHTML);
         commentHTML.append('<div class="reddit-comment-updoot"></div>');
         commentHTML.find('.reddit-comment-updoot').append("<div class=\"up\" style=\"background-image: url(" + (chrome.extension.getURL('/Assets/Images/reddit_icons.png')) + ");\"></div>");
@@ -36,21 +41,40 @@
         commentHTML.append('<div class="comment-wrapper"></div>');
         commentHTML.find('.comment-wrapper').append('<div class="reddit-comment-user"></div>');
         commentHTML.find('.reddit-comment-user').append("<a href=\"http://www.reddit.com/u/" + comment.user + "\">" + comment.user + "</a>");
-        commentHTML.find('.comment-wrapper').append("<div class=\"reddit-comment-content\">" + comment.userContent + "</div>");
+        commentHTML.find('.comment-wrapper').append("<div class=\"reddit-comment-content\">" + (decodeHTML(comment.userContent)) + "</div>");
         commentHTML.find('.comment-wrapper').append('<div class="reddit-comment-source"></div>');
         commentHTML.find('.reddit-comment-source').append("<a href=\"" + comment.url + "\">See Original</a>");
         commentHTML.find('.comment-wrapper').append('<div class="reddit-comment-more"></div>');
-        _results.push(commentHTML.find('.reddit-comment-more').append("<a href=\"" + comment.thread + "\">More From This Thread</a>"));
+        commentHTML.find('.reddit-comment-more').append("<a href=\"" + comment.thread + "\">More From This Thread</a>");
+        if (index === 0) {
+          _results.push(populateComments(comment.children, 1));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     };
     drawToScreen = function(comments) {
       pageSetup();
       selectorSetup();
-      return populateComments(comments);
+      return populateComments(comments, 0);
     };
     reddit = new RedditSearch(drawToScreen);
     return reddit.queryReddit(window.location.href);
   };
+
+  /* testComment = new RedditComment(
+     '&lt;div class="md"&gt;&lt;p&gt;Dunkey&amp;#39;s been hitting a Reddit gold mine lately.&lt;/p&gt;↵&lt;/div&gt;',
+     "TestUser",
+     "http://www.reddit.com/",
+     "http://www.reddit.com/",
+     666,
+     []
+   )
+  
+   testComments = [testComment, testComment, testComment, testComment, testComment]
+   drawToScreen(testComments)
+  */
+
 
 }).call(this);
