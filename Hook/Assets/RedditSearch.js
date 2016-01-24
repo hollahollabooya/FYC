@@ -27,7 +27,7 @@ var RedditSearch = function(callback){
 
 RedditSearch.prototype.queryReddit = function(url) {
     $.ajax({
-        url:"http://www.reddit.com/search.json",
+        url:"https://www.reddit.com/search.json",
         data: {limit: this.MAX_THREADS, q:("url:" + url), sort: "top"},
         success: this.getCommentTrees.bind(this)
     });
@@ -35,7 +35,7 @@ RedditSearch.prototype.queryReddit = function(url) {
 
 RedditSearch.prototype.queryCommentTree = function(subreddit, id) {
     return $.ajax({
-        url:"http://www.reddit.com/r/" + subreddit + "/" + id + ".json",
+        url:"https://www.reddit.com/r/" + subreddit + "/" + id + ".json",
         data: {depth: this.MAX_COMMENT_DEPTH, sort: "top"}
     });
 };
@@ -202,14 +202,10 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             bestSoFar = 0;
             update = false;
         }
-        console.log(bestComments);
-        // return bestComments;
+        this.callback(bestComments);
     }
 };
 
 RedditSearch.prototype.replyDistribution = function (numComments) {
     return Math.round(-0.1 * numComments + 5);
 }
-
-var reddit = new RedditSearch();
-var test = reddit.queryReddit("https://www.youtube.com/watch?v=tgIgsw8WsYY");

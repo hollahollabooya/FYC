@@ -1,15 +1,4 @@
 window.mainScript = ->
-  #TEST FIXTURE DELETE
-  testComment = new RedditComment(
-    'YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!! WATSUUUUUUUUUUUUUUUUUUUUUUUUUUUP FUCKING FILLER BITCH!!! WOOOOOO!!! But seriously I need a lot of text here to accureately test the overflow of my css classes so hopefully this will do it you fucks!t',
-    "JSHater",
-    "https://www.reddit.com/r/videos/comments/42b5vv/robot_solves_rubiks_cube_in_11_seconds/",
-    "https://www.reddit.com/r/videos/comments/42b5vv/robot_solves_rubiks_cube_in_11_seconds/cz8zqm7",
-    474
-  )
-
-  testComments = [testComment, testComment, testComment, testComment, testComment]
-
   #METHOD DEFINITIONS
   pageSetup = ->
     $('<div class="branded-page-box yt-card" id="comments-selector"><div id="reddit-select" class="selected">Reddit</div><div id="youtube-select">Youtube</div></div>').insertBefore('#watch-discussion')
@@ -29,8 +18,8 @@ window.mainScript = ->
       $('#reddit-select').removeClass('selected')
       $('#youtube-select').addClass('selected')
 
-  populateComments = ->
-    for comment in testComments
+  populateComments = (comments) ->
+    for comment in comments
       commentHTML = $('<div class="reddit-comment"></div>')
       $('#reddit-comments-card').append(commentHTML)
       commentHTML.append('<div class="reddit-comment-updoot"></div>')
@@ -46,7 +35,11 @@ window.mainScript = ->
       commentHTML.find('.comment-wrapper').append('<div class="reddit-comment-more"></div>')
       commentHTML.find('.reddit-comment-more').append("<a href=\"#{ comment.thread }\">More From This Thread</a>")
 
-  #Main Script
-  pageSetup()
-  selectorSetup()
-  populateComments()
+  #Main Function
+  drawToScreen = (comments) ->
+    pageSetup()
+    selectorSetup()
+    populateComments(comments)
+
+  reddit = new RedditSearch(drawToScreen)
+  reddit.queryReddit(window.location.href)
