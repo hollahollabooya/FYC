@@ -1,12 +1,13 @@
 /*
 Defines the RedditComment Object
 */
-var RedditComment = function (userContent, user, threadUrl, url, score) {
+var RedditComment = function(userContent, user, threadUrl, url, score, depth) {
     this.userContent = userContent;
     this.user = user;
     this.threadUrl = threadUrl;
     this.url = url;
     this.score = score;
+    this.depth = depth;
     this.children = [];
 };
 
@@ -75,7 +76,7 @@ RedditSearch.prototype.getCommentTrees = function(data) {
     }
     $.when.apply($, commentTrees).then(function(){
         var args = arguments;
-        // console.log(args);
+        console.log(args);
         this.buildComments(args);
     }.bind(this));
 };
@@ -91,7 +92,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
     var permalinks = [];
 
     // declare variables for constructing comment
-    var comment, userContent, user, threadUrl, url, children, score;
+    var comment, userContent, user, threadUrl, url, children, score, depth;
 
     /* unfortunately, indexing is one level deeper when 2 or more
        threads are returned from search results. Thus have to do a pretty hacky
@@ -102,51 +103,45 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             trees[0][0].data.children[0].data.permalink);
 
         while (numComments < 50) {
-                if(trees[0][1].data.children.length > current[i] ||
-                    trees[0][1].data.children.length == 0) {
-                    console.log("no more comments in this thread")
-                    break;
-                }
-                if(trees[0][1].data.children[current[i]].data.score > MAX) {
-                    MAX = trees[i][0][1].data.children[current[i]].data.score;
-                    bestSoFar = i;
-                }
+            if(current[0] >= trees[0][1].data.children.length ||
+                trees[0][1].data.children.length == 0) {
+                console.log("no more comments in this thread")
+                break;
+            }
 
             comment =
-                trees[bestSoFar][0][1].data.children[current[bestSoFar]].data;
+                trees[0][1].data.children[current[0]].data;
             userContent = comment.body;
             user = comment.author;
-            threadUrl = permalinks[bestSoFar];
-            url = permalinks[bestSoFar].concat(comment.id);
-            score = MAX;
+            threadUrl = permalinks[0];
+            url = permalinks[0].concat(comment.id);
+            score = comment.score;
+            depth = 0;
             children = []; // children are empty for now
 
             // add comment to list
             bestComments.push(new RedditComment(userContent, user, threadUrl,
-                url, score));
+                url, score, depth));
             // to implement - select replies if any
 
             // do tidy-up
-            MAX = 0;
             numComments++;
-            current[bestSoFar]++;
-            bestSoFar = 0;
+            current[0]++;
         }
-        // console.log(bestComments);
+        console.log(bestComments);
 
     } else {
         for (var i = 0; i < trees.length; i++) {
-        permalinks.push("http://www.reddit.com" +
-            trees[i][0][0].data.children[0].data.permalink);
-        console.log("got Here");
+            permalinks.push("http://www.reddit.com" +
+                trees[i][0][0].data.children[0].data.permalink);
         }
 
         // need some way to break out if comments are exhausted
         var update = false
         while (numComments < 50) {
             for (var i = 0; i < trees.length; i++) {
-                if(trees[i][0][1].data.children.length > current[i] ||
-                    trees[0][1].data.children.length == 0) {
+                if(current[i] >= trees[i][0][1].data.children.length ||
+                    trees[i][0][1].data.children.length == 0) {
                     console.log("no more comments in this thread")
                     continue;
                 }
@@ -169,11 +164,12 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             threadUrl = permalinks[bestSoFar];
             url = permalinks[bestSoFar].concat(comment.id);
             score = MAX;
+            depth = 0;
             children = []; // children are empty for now
 
             // add comment to list
             bestComments.push(new RedditComment(userContent, user, threadUrl,
-                url, score));
+                url, score, depth));
 
             // to implement - select replies if any
 
@@ -184,9 +180,9 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             bestSoFar = 0;
             update = false;
         }
-        // console.log(bestComments);
+        console.log(bestComments);
     }
 };
 
 var reddit = new RedditSearch();
-var test = reddit.queryReddit("https://www.youtube.com/watch?v=LUVfetZTQhE");
+var test = reddit.queryReddit("https://www.youtube.com/watch?v=KtglAQCxUIk");
