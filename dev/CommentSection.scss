@@ -65,9 +65,19 @@
       }
       .up {
         background-position: 0 -24px;
+        cursor: pointer;
+
+        &.active {
+          background-position: -15px -24px;
+        }
       }
       .down {
         background-position: -30px -24px;
+        cursor: pointer;
+
+        &.active {
+          background-position: -45px -24px;
+        }
       }
     }
 

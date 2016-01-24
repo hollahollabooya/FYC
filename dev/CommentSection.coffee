@@ -47,25 +47,35 @@ window.mainScript = ->
   suggestPost = ->
     $('#reddit-comments-card').append("<div class=\"empty-message\">We couldn\'t find anything! Maybe you should <a href=\"https://www.reddit.com/r/videos/submit?url=#{ encodeURI(window.location.href) }\">submit to r/videos</a></div>")
 
+  setupUpdoots = ->
+    $('.reddit-comment-updoot .up').on "click", ->
+      $(this).toggleClass('active')
+      $(this).parent().find('.down').removeClass('active')
+
+    $('.reddit-comment-updoot .down').on "click", ->
+      $(this).toggleClass('active')
+      $(this).parent().find('.up').removeClass('active')
+
   #Main Function
   drawToScreen = (comments) ->
     pageSetup()
     selectorSetup()
     populateComments(comments, 0) if comments.length > 0
     suggestPost() if comments.length == 0
+    setupUpdoots()
 
   reddit = new RedditSearch(drawToScreen)
   reddit.queryReddit(window.location.href)
 
-  #TEST ONLY
- ### testComment = new RedditComment(
-    '&lt;div class="md"&gt;&lt;p&gt;Dunkey&amp;#39;s been hitting a Reddit gold mine lately.&lt;/p&gt;↵&lt;/div&gt;',
-    "TestUser",
-    "http://www.reddit.com/",
-    "http://www.reddit.com/",
-    666,
-    []
-  )
 
-  testComments = [testComment, testComment, testComment, testComment, testComment]
-  drawToScreen(testComments)###
+
+
+
+
+
+
+
+
+
+
+
