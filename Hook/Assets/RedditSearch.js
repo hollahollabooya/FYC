@@ -114,7 +114,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
                     }
                     userContent = replies[i].data.body;
                     user = replies[i].data.author;
-                    subreddit = replies[i].data.author
+                    subreddit = replies[i].data.subreddit;
                     url = permalinks[bestSoFar].concat(replies[i].data.id);
                     score = replies[i].data.score;
                     depth = 1;
@@ -187,7 +187,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
                     }
                     userContent = replies[i].data.body;
                     user = replies[i].data.author;
-                    subreddit = replies[i].data.author;
+                    subreddit = replies[i].data.subreddit;
                     url = permalinks[bestSoFar].concat(replies[i].data.id);
                     score = replies[i].data.score;
                     depth = 1;
