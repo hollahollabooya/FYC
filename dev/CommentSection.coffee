@@ -1,7 +1,7 @@
-$(document).ready ->
+window.mainScript = ->
   #TEST FIXTURE DELETE
   testComment = new RedditComment(
-    'YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!! WATSUUUUUUUUUUUUUUUUUUUUUUUUUUUP FUCKING FILLER BITCH!!! WOOOOOO!!! But seriously I need a lot of text here to accureately test the overflow of my css classes so hopefully this will do it you fucks!',
+    'YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!! WATSUUUUUUUUUUUUUUUUUUUUUUUUUUUP FUCKING FILLER BITCH!!! WOOOOOO!!! But seriously I need a lot of text here to accureately test the overflow of my css classes so hopefully this will do it you fucks!t',
     "JSHater",
     "https://www.reddit.com/r/videos/comments/42b5vv/robot_solves_rubiks_cube_in_11_seconds/",
     "https://www.reddit.com/r/videos/comments/42b5vv/robot_solves_rubiks_cube_in_11_seconds/cz8zqm7",
