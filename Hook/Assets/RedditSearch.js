@@ -52,7 +52,7 @@ RedditSearch.prototype.getCommentTrees = function(data) {
     }
     $.when.apply($, commentTrees).then(function(){
         var args = arguments;
-        console.log(args);
+        //console.log(args);
         this.buildComments(args);
     }.bind(this));
 };
@@ -102,6 +102,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             comment = new RedditComment(userContent, user, threadUrl,
                 url, score, depth, subreddit);
             bestComments.push(comment);
+            console.log(comment);
 
             // Select replies if any
             numReplies = this.replyDistribution(numComments+1);
@@ -175,6 +176,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             comment = new RedditComment(userContent, user, threadUrl, url,
                 score, depth, subreddit);
             bestComments.push(comment);
+            console.log(comment);
 
             // Select replies if any
             numReplies = this.replyDistribution(numComments+1);
