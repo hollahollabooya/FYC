@@ -209,8 +209,8 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             bestSoFar = 0;
             update = false;
         }
-        this.callback(bestComments);
     }
+    this.callback(bestComments);
 };
 
 RedditSearch.prototype.replyDistribution = function (numComments) {
