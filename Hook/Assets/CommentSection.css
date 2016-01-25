@@ -18,9 +18,14 @@
 
 #reddit-comments-card {
   overflow: auto; }
+  #reddit-comments-card .empty-message {
+    text-align: center;
+    font-size: 24px; }
   #reddit-comments-card .reddit-comment {
     margin-top: 20px;
     overflow: auto; }
+    #reddit-comments-card .reddit-comment a:hover {
+      text-decoration: none; }
     #reddit-comments-card .reddit-comment.lesser {
       padding-left: 20px;
       margin-left: 19px; }
@@ -36,14 +41,26 @@
         height: 14px;
         width: 15px; }
       #reddit-comments-card .reddit-comment .reddit-comment-updoot .up {
-        background-position: 0 -24px; }
+        background-position: 0 -24px;
+        cursor: pointer; }
+        #reddit-comments-card .reddit-comment .reddit-comment-updoot .up.active {
+          background-position: -15px -24px; }
       #reddit-comments-card .reddit-comment .reddit-comment-updoot .down {
-        background-position: -30px -24px; }
+        background-position: -30px -24px;
+        cursor: pointer; }
+        #reddit-comments-card .reddit-comment .reddit-comment-updoot .down.active {
+          background-position: -45px -24px; }
     #reddit-comments-card .reddit-comment .comment-wrapper {
       float: left;
       width: 95%; }
       #reddit-comments-card .reddit-comment .comment-wrapper .reddit-comment-user {
-        margin-bottom: 5px; }
+        margin-bottom: 5px;
+        display: inline-block;
+        margin-right: 15px; }
+      #reddit-comments-card .reddit-comment .comment-wrapper .reddit-comment-sub {
+        display: inline-block;
+        margin-bottom: 5px;
+        color: #d2d200; }
       #reddit-comments-card .reddit-comment .comment-wrapper .reddit-comment-source {
         display: inline-block;
         margin-top: 5px; }

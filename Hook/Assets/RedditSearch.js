@@ -1,7 +1,8 @@
 /*
 Defines the RedditComment Object
 */
-var RedditComment = function(userContent, user, subreddit, threadUrl, url, score, depth) {
+
+var RedditComment = function(userContent, user, threadUrl, url, score, depth, subreddit) {
     this.userContent = userContent;
     this.user = user;
     this.subreddit = subreddit;
@@ -9,6 +10,7 @@ var RedditComment = function(userContent, user, subreddit, threadUrl, url, score
     this.url = url;
     this.score = score;
     this.depth = depth;
+    this.subreddit = subreddit;
     this.children = [];
 };
 
@@ -52,7 +54,7 @@ RedditSearch.prototype.getCommentTrees = function(data) {
     }
     $.when.apply($, commentTrees).then(function(){
         var args = arguments;
-        console.log(args);
+        //console.log(args);
         this.buildComments(args);
     }.bind(this));
 };
@@ -68,7 +70,7 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
     var permalinks = [];
 
     // declare variables for constructing comment
-    var userContent, user, subreddit, threadUrl, url, children, score, depth;
+    var userContent, user, threadUrl, url, children, score, depth, subreddit;
     var com, comment, replies, reply;
     var numReplies = 0;
 
@@ -96,12 +98,14 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             url = permalinks[0].concat(com.id);
             score = com.score;
             depth = 0;
+            subreddit = com.subreddit;
             children = []; // children are empty for now
 
             // add comment to list
-            comment = new RedditComment(userContent, user, subreddit,
-                threadUrl, url, score, depth)
+            comment = new RedditComment(userContent, user, threadUrl,
+                url, score, depth, subreddit);
             bestComments.push(comment);
+            console.log(comment);
 
             // Select replies if any
             numReplies = this.replyDistribution(numComments+1);
@@ -118,10 +122,11 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
                     url = permalinks[bestSoFar].concat(replies[i].data.id);
                     score = replies[i].data.score;
                     depth = 1;
+                    subreddit = replies[i].data.subreddit;
                     children = [];
 
-                    reply = new RedditComment(userContent, user, subreddit,
-                        threadUrl, url, score, depth);
+                    reply = new RedditComment(userContent, user, threadUrl,
+                        url, score, depth, subreddit);
                     comment.addChild(reply);
                     numComments++;
                 }
@@ -167,14 +172,16 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             subreddit = com.subreddit;
             threadUrl = permalinks[bestSoFar];
             url = permalinks[bestSoFar].concat(com.id);
+            subreddit = com.subreddit;
             score = MAX;
             depth = 0;
             children = []; // children are empty for now
 
             // add com to list
-            comment = new RedditComment(userContent, user, threadUrl,
-                subreddit, url, score, depth);
+            comment = new RedditComment(userContent, user, threadUrl, url,
+                score, depth, subreddit);
             bestComments.push(comment);
+            console.log(comment);
 
             // Select replies if any
             numReplies = this.replyDistribution(numComments+1);
@@ -190,11 +197,12 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
                     subreddit = replies[i].data.subreddit;
                     url = permalinks[bestSoFar].concat(replies[i].data.id);
                     score = replies[i].data.score;
+                    subreddit = replies[i].data.subreddit;
                     depth = 1;
                     children = [];
 
-                    reply = new RedditComment(userContent, user, subreddit,
-                        threadUrl, url, score, depth);
+                    reply = new RedditComment(userContent, user, threadUrl,
+                        url, score, depth, subreddit);
                     comment.addChild(reply);
                     numComments++;
                 }
@@ -207,9 +215,8 @@ RedditSearch.prototype.buildComments = function(commentTrees) {
             bestSoFar = 0;
             update = false;
         }
-        console.log(bestComments);
-        // return bestComments;
     }
+    this.callback(bestComments);
 };
 
 RedditSearch.prototype.postVote = function() {
