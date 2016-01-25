@@ -2,11 +2,24 @@
 (function() {
 
   window.mainScript = function() {
-    var decodeHTML, drawToScreen, pageSetup, populateComments, reddit, selectorSetup, setupUpdoots, suggestPost;
+    var decodeHTML, drawToScreen, pageSetup, populateComments, reddit, selectorSetup, setupUpdoots, suggestPost, verbose;
+    verbose = true;
+    if (verbose) {
+      console.log('Main Script is being run');
+    }
+    if ($('#watch-discussion').length > 0 && verbose) {
+      console.log('We found the youtube comments section');
+    }
     pageSetup = function() {
+      if (verbose) {
+        console.log('pageSetup started...');
+      }
       $('<div class="branded-page-box yt-card" id="comments-selector"><div id="reddit-select" class="selected">Reddit</div><div id="youtube-select">Youtube</div></div>').insertBefore('#watch-discussion');
       $('#watch-discussion').hide();
-      return $('<div class="branded-page-box yt-card" id="reddit-comments-card"></div>').insertAfter('#watch-discussion');
+      $('<div class="branded-page-box yt-card" id="reddit-comments-card"></div>').insertAfter('#watch-discussion');
+      if (verbose) {
+        return console.log('pageSetup completed');
+      }
     };
     selectorSetup = function() {
       $('#reddit-select').on("click", function() {
@@ -15,6 +28,9 @@
         $('#reddit-select').addClass('selected');
         return $('#youtube-select').removeClass('selected');
       });
+      if (verbose) {
+        console.log('selectorSetup completed');
+      }
       return $('#youtube-select').on("click", function() {
         $('#watch-discussion').show();
         $('#reddit-comments-card').hide();
@@ -28,8 +44,10 @@
       return SnuOwnd.getParser().render(decoded);
     };
     populateComments = function(comments, index) {
-      var comment, commentHTML, _i, _len, _results;
-      _results = [];
+      var comment, commentHTML, _i, _len;
+      if (verbose) {
+        console.log('populateComments started...');
+      }
       for (_i = 0, _len = comments.length; _i < _len; _i++) {
         comment = comments[_i];
         if (!(comment.user != null)) {
@@ -54,12 +72,12 @@
         commentHTML.find('.comment-wrapper').append('<div class="reddit-comment-more"></div>');
         commentHTML.find('.reddit-comment-more').append("<a href=\"" + comment.threadUrl + "\">More From This Thread</a>");
         if (index === 0) {
-          _results.push(populateComments(comment.children, 1));
-        } else {
-          _results.push(void 0);
+          populateComments(comment.children, 1);
         }
       }
-      return _results;
+      if (verbose) {
+        return console.log('populateComments completed');
+      }
     };
     suggestPost = function() {
       return $('#reddit-comments-card').append("<div class=\"empty-message\">We couldn\'t find anything! Maybe you should <a href=\"https://www.reddit.com/r/videos/submit?url=" + (encodeURI(window.location.href)) + "\">submit to r/videos</a></div>");
@@ -75,8 +93,14 @@
       });
     };
     drawToScreen = function(comments) {
+      if (verbose) {
+        console.log('drawToScreen started...');
+      }
       pageSetup();
       selectorSetup();
+      if (verbose) {
+        console.log("We've found " + comments.length + " comments");
+      }
       if (comments.length > 0) {
         populateComments(comments, 0);
       }
