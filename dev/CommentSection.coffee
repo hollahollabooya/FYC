@@ -1,4 +1,4 @@
-window.mainScript = ->
+window.injectionScript = (comments) ->
   verbose = true
 
   console.log('Main Script is being run') if verbose
@@ -75,5 +75,4 @@ window.mainScript = ->
     suggestPost() if comments.length == 0
     setupUpdoots()
 
-  reddit = new RedditSearch(drawToScreen)
-  reddit.queryReddit(window.location.href)
+  drawToScreen(comments)
